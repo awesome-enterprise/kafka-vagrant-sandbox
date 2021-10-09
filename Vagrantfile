@@ -25,17 +25,6 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder "ansible", "/home/vagrant/ansible", create: true
 
-    (1..KAFKA).each do |i|
-        config.vm.define "kafka-#{i}" do |kafka|
-            kafka.vm.hostname = "kafka-#{i}"
-            kafka.vm.provider "virtualbox" do |vb|
-                vb.memory = KAFKA_MEMORY
-                vb.cpus = "1"
-            end
-            kafka.vm.network :private_network, ip: "#{KAFKA_SUBNET}#{1 + i}", auto_config: true
-        end
-    end
-
     (1..ZOOKEEPER).each do |i|
         config.vm.define "zookeeper-#{i}" do |zookeeper|
             zookeeper.vm.hostname = "zookeeper-#{i}"
@@ -44,6 +33,39 @@ Vagrant.configure("2") do |config|
                 vb.cpus = "1"
             end
             zookeeper.vm.network :private_network, ip: "#{ZOOKEEPER_SUBNET}#{1 + i}", auto_config: true
+
+            if i == ZOOKEEPER
+                zookeeper.vm.provision :ansible do |ansible|
+                    ansible.compatibility_mode = "2.0"
+                    ansible.limit = "zookeeper"
+                    ansible.playbook = "ansible/network.yml"
+                    ansible.inventory_path = "ansible/inventories/vbox"
+                    ansible.raw_arguments  = [
+                        "-vv"
+                    ]
+                end
+
+                zookeeper.vm.provision :ansible do |ansible|
+                    ansible.compatibility_mode = "2.0"
+                    ansible.limit = "zookeeper"
+                    ansible.playbook = "ansible/cluster.yml"
+                    ansible.inventory_path = "ansible/inventories/vbox"
+                    ansible.raw_arguments  = [
+                        "-vv"
+                    ]
+                end
+            end
+        end
+    end
+
+    (1..KAFKA).each do |i|
+        config.vm.define "kafka-#{i}" do |kafka|
+            kafka.vm.hostname = "kafka-#{i}"
+            kafka.vm.provider "virtualbox" do |vb|
+                vb.memory = KAFKA_MEMORY
+                vb.cpus = "1"
+            end
+            kafka.vm.network :private_network, ip: "#{KAFKA_SUBNET}#{1 + i}", auto_config: true
         end
     end
 end
