@@ -40,3 +40,75 @@ vagrant up
 The result if everything wents fine should be
 
 ![Kafka Zookeeper Cluster](docs/images/kafka-zookeeper-cluster-diagram.png)
+
+## Coordinates
+
+#### Servers
+
+| IP | Hostname | Description | Settings |
+|---|---|---|---|
+|192.168.10.2|zookeeper-1|running a zookeeper instance| 512 MB RAM |
+|192.168.10.3|zookeeper-2|running a zookeeper instance| 512 MB RAM |
+|192.168.10.4|zookeeper-3|running a zookeeper instance| 512 MB RAM |
+|192.168.11.2|kafka-1|running kafka broker| 512 MB RAM |
+|192.168.11.3|kafka-1|running kafka broker| 512 MB RAM |
+|192.168.11.4|kafka-1|running kafka broker| 512 MB RAM |
+
+### Connections
+
+| Name | address |
+|---|---|
+|Zookeeper|zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181|
+|Kafka Brokers|kafka-1:9092,kafka-2:9092,kafka-3:9092|
+
+# Usage
+## Zookeeper
+
+```bash
+[vagrant@zookeeper-1 ~]$ zookeeper-shell.sh zookeeper-1:2181/
+Connecting to zookeeper-1:2181/
+Welcome to ZooKeeper!
+JLine support is disabled
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+ls /
+[admin, brokers, cluster, config, consumers, controller, controller_epoch, isr_change_notification, latest_producer_id_block, log_dir_event_notification, zookeeper]
+ls /brokers/ids
+[0, 1, 2]
+
+```
+
+## Kafka
+
+### Topic Creation
+
+```bash
+prog:~ prog$ vagrant ssh kafka-1
+[vagrant@kafka-1 ~]$ kafka-topics.sh --create --zookeeper kafka-1:2181 --replication-factor 2 --partitions 6 --topic sample
+Created topic "sample".
+[vagrant@kafka-1 ~]$ kafka-topics.sh --zookeeper zookeeper-1 --topic sample --describe
+Topic:sample	PartitionCount:6	ReplicationFactor:2	Configs:
+	Topic: sample	Partition: 0	Leader: 1	Replicas: 1,2	Isr: 1,2
+	Topic: sample	Partition: 1	Leader: 2	Replicas: 2,3	Isr: 2,3
+	Topic: sample	Partition: 2	Leader: 3	Replicas: 3,1	Isr: 3,1
+	Topic: sample	Partition: 3	Leader: 1	Replicas: 1,3	Isr: 1,3
+	Topic: sample	Partition: 4	Leader: 2	Replicas: 2,1	Isr: 2,1
+	Topic: sample	Partition: 5	Leader: 3	Replicas: 3,2	Isr: 3,2
+[vagrant@kafka-1 ~]$
+```
+### Producer
+
+```bash
+[vagrant@kafka-1 ~]$ kafka-console-producer.sh --broker-list kafka-1:9092,kafka-3:9092 --topic sample
+Hey, is Kafka up and running?
+```
+
+### Consumer
+
+```bash
+[vagrant@kafka-1 ~]$ kafka-console-consumer.sh --bootstrap-server kafka-1:9092,kafka-3:9092 --topic sample --from-beginning
+Hey, is Kafka up and running?
+```
+
