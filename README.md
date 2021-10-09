@@ -10,3 +10,12 @@ In case you need a local cluster providing Kafka with ZooKeeper cluster, you are
 ## Prerequisites
 * [Vagrant](https://www.vagrantup.com) (tested with 2.2.18)
 * [VirtualBox](http://virtualbox.org) (tested with 6.1.26)
+* [Ansible]() (tested with 4.6.0)
+ 
+# version checking
+* Vagrant: 
+  `vagrant --version`
+* VirtualBox: 
+  `vboxmanage --version`
+* Ansible: 
+`python -c 'from ansible_collections.ansible_release import ansible_version; print(ansible_version)'`
