@@ -26,3 +26,12 @@ In case you need a local cluster providing Kafka with ZooKeeper cluster, you are
   `vboxmanage --version`
 * Ansible: 
 `python -c 'from ansible_collections.ansible_release import ansible_version; print(ansible_version)'`
+
+
+## Init
+
+```bash
+git clone https://github.com/awesome-enterprise/kafka-vagrant-sandbox.git
+vagrant up
+```
+
