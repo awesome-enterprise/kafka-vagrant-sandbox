@@ -10,8 +10,6 @@ KAFKA_MEMORY = "512";
 ZOOKEEPER_SUBNET = "192.168.10."
 KAFKA_SUBNET = "192.168.11."
 
-DEFAULT_NETWORK_INTERFACE = "enp0s8"
-
 Vagrant.configure("2") do |config|
 
     required_plugins = %w( vagrant-hostsupdater )
@@ -26,8 +24,6 @@ Vagrant.configure("2") do |config|
     config.vm.box_check_update = true
 
     config.vm.synced_folder "ansible", "/home/vagrant/ansible", create: true
-
-    #config.vm.provision :shell, inline: "ifup #{DEFAULT_NETWORK_INTERFACE}", run: "always"
 
     (1..KAFKA).each do |i|
         config.vm.define "kafka-#{i}" do |kafka|
