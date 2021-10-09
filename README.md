@@ -35,3 +35,8 @@ git clone https://github.com/awesome-enterprise/kafka-vagrant-sandbox.git
 vagrant up
 ```
 
+## Cluster
+
+The result if everything wents fine should be
+
+![Kafka Zookeeper Cluster](docs/images/kafka-zookeeper-cluster-diagram.png)
