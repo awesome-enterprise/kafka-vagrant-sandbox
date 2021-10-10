@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
         system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
     end
 
-    config.vm.box = "ubuntu/xenial64"
+    config.vm.box = "ubuntu/focal64"
         if Vagrant.has_plugin?("vagrant-vbguest") then
             config.vbguest.auto_update = false
         end
@@ -58,14 +58,14 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    (1..KAFKA).each do |i|
-        config.vm.define "kafka-#{i}" do |kafka|
-            kafka.vm.hostname = "kafka-#{i}"
-            kafka.vm.provider "virtualbox" do |vb|
-                vb.memory = KAFKA_MEMORY
-                vb.cpus = "1"
-            end
-            kafka.vm.network :private_network, ip: "#{KAFKA_SUBNET}#{1 + i}", auto_config: true
-        end
-    end
+#     (1..KAFKA).each do |i|
+#         config.vm.define "kafka-#{i}" do |kafka|
+#             kafka.vm.hostname = "kafka-#{i}"
+#             kafka.vm.provider "virtualbox" do |vb|
+#                 vb.memory = KAFKA_MEMORY
+#                 vb.cpus = "1"
+#             end
+#             kafka.vm.network :private_network, ip: "#{KAFKA_SUBNET}#{1 + i}", auto_config: true
+#         end
+#     end
 end
