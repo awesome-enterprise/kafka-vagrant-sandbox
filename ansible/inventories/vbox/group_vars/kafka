@@ -1,0 +1,2 @@
+kafka_home: /usr/local/{{ kafka }}
+kafka_log_dir: "{{ kafka_home }}/logs"

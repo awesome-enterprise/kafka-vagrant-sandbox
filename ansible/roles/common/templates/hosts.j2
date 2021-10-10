@@ -1,0 +1,8 @@
+127.0.0.1   localhost
+::1         localhost ip6-localhost ip6-loopback
+
+{% for item in groups['all'] %}
+{% if 'ansible_enp0s8' in hostvars[item] %}
+{{ hostvars[item]['ansible_enp0s8']['ipv4']['address'] }} {{ item }}
+{% endif %}
+{% endfor %}
