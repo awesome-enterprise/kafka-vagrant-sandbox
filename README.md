@@ -32,6 +32,9 @@ In case you need a local cluster providing Kafka with ZooKeeper cluster, you are
 
 ```bash
 git clone https://github.com/awesome-enterprise/kafka-vagrant-sandbox.git
+
+ansible-galaxy install andrewrothstein.zookeeper
+
 vagrant up
 ```
 

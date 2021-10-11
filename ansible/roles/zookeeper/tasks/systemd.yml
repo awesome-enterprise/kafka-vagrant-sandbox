@@ -1,0 +1,28 @@
+---
+- name: install systemd unit
+  become: yes
+  become_user: root
+  with_items:
+    - f: zookeeper.service
+      d: /etc/systemd/system
+  register: zookeeper_service_installed
+  template:
+    src: '{{ item.f }}.j2'
+    dest: '{{ item.d }}/{{ item.f }}'
+    mode: '{{ item.m|default("0644") }}'
+
+- name: systemctl daemon-reload
+  become: yes
+  become_user: root
+  when: zookeeper_service_installed is changed and zookeeper_launch
+  systemd:
+    daemon_reload: yes
+
+- name: launch zookeeper...
+  become: yes
+  become_user: root
+  when: zookeeper_launch
+  service:
+    name: zookeeper
+    enabled: yes
+    state: started
