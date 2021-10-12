@@ -34,6 +34,10 @@ Vagrant.configure("2") do |config|
             end
             zookeeper.vm.network :private_network, ip: "#{ZOOKEEPER_SUBNET}#{1 + i}", auto_config: true
 
+            id_rsa_pub = File.read("./shared-keys/ssh_key.pub")
+            config.vm.provision "copy ssh public key", type: "shell",
+              inline: "echo \"#{id_rsa_pub}\" >> /home/vagrant/.ssh/authorized_keys"
+
             if i == ZOOKEEPER
                 zookeeper.vm.provision :ansible do |ansible|
                     ansible.compatibility_mode = "2.0"
@@ -41,8 +45,9 @@ Vagrant.configure("2") do |config|
                     ansible.playbook = "ansible/network.yml"
                     ansible.inventory_path = "ansible/inventories/vbox"
                     ansible.host_key_checking = false
-                    ansible.verbose = 'vvvv'
-                    ansible.extra_vars = { ansible_ssh_user: 'vagrant'}
+                    ansible.verbose = 'vv'
+                    ansible.host_key_checking = false
+                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key'  }
                 end
 
                 zookeeper.vm.provision :ansible do |ansible|
@@ -51,8 +56,9 @@ Vagrant.configure("2") do |config|
                     ansible.playbook = "ansible/cluster.yml"
                     ansible.inventory_path = "ansible/inventories/vbox"
                     ansible.host_key_checking = false
-                    ansible.verbose = 'vvvv'
-                    ansible.extra_vars = { ansible_ssh_user: 'vagrant'}
+                    ansible.verbose = 'vv'
+                    ansible.host_key_checking = false
+                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key'  }
                 end
             end
         end
