@@ -2,7 +2,7 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 
 # if sth. gets changed here, also adapt /ansible/inventories/vbox/hosts
 ZOOKEEPER = 3
-KAFKA = 0
+KAFKA = 3
 
 ZOOKEEPER_MEMORY = "512";
 KAFKA_MEMORY = "512";
@@ -44,7 +44,6 @@ Vagrant.configure("2") do |config|
                     ansible.limit = "zookeeper"
                     ansible.playbook = "ansible/network.yml"
                     ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.host_key_checking = false
                     ansible.verbose = 'vv'
                     ansible.host_key_checking = false
                     ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key'  }
@@ -55,7 +54,6 @@ Vagrant.configure("2") do |config|
                     ansible.limit = "zookeeper"
                     ansible.playbook = "ansible/cluster.yml"
                     ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.host_key_checking = false
                     ansible.verbose = 'vv'
                     ansible.host_key_checking = false
                     ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key'  }
@@ -79,9 +77,9 @@ Vagrant.configure("2") do |config|
                     ansible.limit = "kafka"
                     ansible.playbook = "ansible/network.yml"
                     ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.raw_arguments  = [
-                        "-vv"
-                    ]
+                    ansible.verbose = 'vv'
+                    ansible.host_key_checking = false
+                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key' }
                 end
 
                 kafka.vm.provision :ansible do |ansible|
@@ -89,9 +87,9 @@ Vagrant.configure("2") do |config|
                     ansible.limit = "kafka"
                     ansible.playbook = "ansible/cluster.yml"
                     ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.raw_arguments  = [
-                        "-vv"
-                    ]
+                    ansible.verbose = 'vv'
+                    ansible.host_key_checking = false
+                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key' }
                 end
             end
         end

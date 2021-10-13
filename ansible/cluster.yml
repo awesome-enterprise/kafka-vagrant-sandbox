@@ -2,4 +2,10 @@
   remote_user: vagrant
   serial: 100%
   roles:
-    - zookeeper
+    - {role: zookeeper, tags: zookeeper}
+
+- hosts: kafka
+  remote_user: vagrant
+  serial: 100%
+  roles:
+    - {role: kafka, tags: kafka}

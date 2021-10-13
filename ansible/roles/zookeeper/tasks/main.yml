@@ -1,4 +1,8 @@
 ---
+- name: "output zookeeper-connect option"
+  ansible.builtin.debug:
+    msg: print zookeepr-connect option {{ kafka_zookeeper_connect }}
+
 - name: ensure the data subdir exists
   become: yes
   become_user: root

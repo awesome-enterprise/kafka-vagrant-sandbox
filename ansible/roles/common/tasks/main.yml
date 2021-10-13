@@ -1,4 +1,8 @@
 ---
+- name: "show all hosts"
+  ansible.builtin.debug:
+    msg: hosts {{ hostvars }}
+
 - name: "generate /etc/hosts.ansible file"
   become: yes
   become_method: sudo
@@ -8,3 +12,4 @@
     owner: root
     group: root
     mode: 0644
+

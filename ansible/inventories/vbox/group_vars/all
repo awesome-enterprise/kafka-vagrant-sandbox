@@ -3,3 +3,5 @@
 ansible_connection: ssh
 ansible_ssh_user: vagrant
 ansible_ssh_pass: vagrant
+zookeeper_client_port: 2181
+kafka_zookeeper_connect: "{% for item in query('inventory_hostnames', 'zookeeper') %}{{item}}:{{zookeeper_client_port}}{{ '' if loop.last else ',' }}{% endfor %}"
