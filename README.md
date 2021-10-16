@@ -60,36 +60,36 @@ The result if everything wents fine should be
 
 | IP | Hostname | Description | Settings |
 |---|---|---|---|
-|192.168.10.2|zookeeper-1|running a zookeeper instance| 512 MB RAM |
-|192.168.10.3|zookeeper-2|running a zookeeper instance| 512 MB RAM |
-|192.168.10.4|zookeeper-3|running a zookeeper instance| 512 MB RAM |
-|192.168.11.2|kafka-1|running kafka broker| 512 MB RAM |
-|192.168.11.3|kafka-1|running kafka broker| 512 MB RAM |
-|192.168.11.4|kafka-1|running kafka broker| 512 MB RAM |
+|192.168.10.11|zookeeper1|running a zookeeper instance| 512 MB RAM |
+|192.168.10.12|zookeeper2|running a zookeeper instance| 512 MB RAM |
+|192.168.10.13|zookeeper3|running a zookeeper instance| 512 MB RAM |
+|192.168.11.11|kafka1|running kafka broker| 1024 MB RAM |
+|192.168.11.12|kafka1|running kafka broker| 1024 MB RAM |
+|192.168.11.13|kafka1|running kafka broker| 1024 MB RAM |
 
 ### Connections
 
 | Name | address |
 |---|---|
-|Zookeeper|zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181|
-|Kafka Brokers|kafka-1:9092,kafka-2:9092,kafka-3:9092|
+|Zookeeper|zookeeper1:2181,zookeeper2:2181,zookeeper3:2181|
+|Kafka Brokers|kafka1:9092,kafka2:9092,kafka3:9092|
 
 # Usage
 ## Zookeeper
 
 ```bash
-[vagrant@zookeeper-1 ~]$ zookeeper-shell.sh zookeeper-1:2181/
-Connecting to zookeeper-1:2181/
+[vagrant@zookeeper1 ~]$ zkCli.sh -server zookeeper1:2181
+Connecting to zookeeper1:2181
 Welcome to ZooKeeper!
-JLine support is disabled
+JLine support is enabled
 
 WATCHER::
 
 WatchedEvent state:SyncConnected type:None path:null
-ls /
-[admin, brokers, cluster, config, consumers, controller, controller_epoch, isr_change_notification, latest_producer_id_block, log_dir_event_notification, zookeeper]
-ls /brokers/ids
-[0, 1, 2]
+[zk: zookeeper1:2181(CONNECTED) 1] ls /
+[admin, brokers, cluster, config, consumers, controller, controller_epoch, feature, isr_change_notification, latest_producer_id_block, log_dir_event_notification, zookeeper]
+[zk: zookeeper1:2181(CONNECTED) 4] ls /brokers/ids
+[1, 2, 3]
 
 ```
 
