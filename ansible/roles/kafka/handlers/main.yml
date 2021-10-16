@@ -3,12 +3,16 @@
   command: initctl reload-configuration
 
 - name: Restart kafka service
+  become: yes
+  become_user: root
   service:
     name: kafka
     state: restarted
   when: kafka_restart
 
 - name: Restart kafka systemd
+  become: yes
+  become_user: root
   systemd:
     name: kafka
     state: restarted
