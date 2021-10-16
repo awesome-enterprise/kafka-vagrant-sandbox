@@ -37,11 +37,13 @@ cd kafka-vagrant-sandbox
 
 ansible-galaxy install andrewrothstein.zookeeper
 
-chmod 600 /shared-keys/ssh_key
+chmod 600 ./shared-keys/ssh_key
 
 vagrant up
 
 cd ansible
+
+ansible all -m ping
 
 ansible-playbook network.yml
 
