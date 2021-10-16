@@ -7,6 +7,7 @@ After=network.target
 [Service]
 Type=simple
 StandardOutput=null
+EnvironmentFile=-/usr/local/openjdk-jre/openjdk.env
 Environment="KAFKA_HEAP_OPTS={{ kafka_java_heap }}"
 Environment="LOG_DIR={{ kafka_log_dir }}"
 ExecStart={{ kafka_dir }}/bin/kafka-server-start.sh /etc/kafka/server.properties

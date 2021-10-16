@@ -297,7 +297,7 @@
 
 - name: Install and start the kafka service
   become: yes
-  become_method: sudo
+  become_user: root
   service:
     name: kafka
     state: started

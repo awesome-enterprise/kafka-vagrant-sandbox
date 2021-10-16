@@ -27,7 +27,7 @@ kafka_restart: yes
 kafka_broker_id: 0
 
 # The Java heap size (memory) allocation (xmx, xms)
-kafka_java_heap: "-Xms256M -Xmx256M"
+kafka_java_heap: "-Xms512M -Xmx512M"
 
 # The number of threads to use for various background processing tasks
 kafka_background_threads: 10

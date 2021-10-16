@@ -4,9 +4,9 @@ zookeeper2 zookeeper_myid=2
 zookeeper3 zookeeper_myid=3
 
 [kafka]
-kafka1
-kafka2
-kafka3
+kafka1 kafka_id=1
+kafka2 kafka_id=2
+kafka3 kafka_id=3
 
 [zookeeper-quorum]
 zookeeper[1:3]

@@ -5,10 +5,10 @@ ZOOKEEPER = 3
 KAFKA = 3
 
 ZOOKEEPER_MEMORY = "512";
-KAFKA_MEMORY = "512";
+KAFKA_MEMORY = "1024";
 
-ZOOKEEPER_SUBNET = "192.168.10."
-KAFKA_SUBNET = "192.168.11."
+ZOOKEEPER_SUBNET = "192.168.10.1"
+KAFKA_SUBNET = "192.168.11.1"
 
 Vagrant.configure("2") do |config|
 
@@ -32,33 +32,11 @@ Vagrant.configure("2") do |config|
                 vb.memory = ZOOKEEPER_MEMORY
                 vb.cpus = "1"
             end
-            zookeeper.vm.network :private_network, ip: "#{ZOOKEEPER_SUBNET}#{1 + i}", auto_config: true
+            zookeeper.vm.network :private_network, ip: "#{ZOOKEEPER_SUBNET}#{i}", auto_config: true
 
             id_rsa_pub = File.read("./shared-keys/ssh_key.pub")
             config.vm.provision "copy ssh public key", type: "shell",
               inline: "echo \"#{id_rsa_pub}\" >> /home/vagrant/.ssh/authorized_keys"
-
-            if i == ZOOKEEPER
-                zookeeper.vm.provision :ansible do |ansible|
-                    ansible.compatibility_mode = "2.0"
-                    ansible.limit = "zookeeper"
-                    ansible.playbook = "ansible/network.yml"
-                    ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.verbose = 'vv'
-                    ansible.host_key_checking = false
-                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key'  }
-                end
-
-                zookeeper.vm.provision :ansible do |ansible|
-                    ansible.compatibility_mode = "2.0"
-                    ansible.limit = "zookeeper"
-                    ansible.playbook = "ansible/cluster.yml"
-                    ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.verbose = 'vv'
-                    ansible.host_key_checking = false
-                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key'  }
-                end
-            end
         end
     end
 
@@ -69,29 +47,11 @@ Vagrant.configure("2") do |config|
                 vb.memory = KAFKA_MEMORY
                 vb.cpus = "1"
             end
-            kafka.vm.network :private_network, ip: "#{KAFKA_SUBNET}#{1+i}", auto_config: true
+            kafka.vm.network :private_network, ip: "#{KAFKA_SUBNET}#{i}", auto_config: true
 
-            if i == KAFKA
-                kafka.vm.provision :ansible do |ansible|
-                    ansible.compatibility_mode = "2.0"
-                    ansible.limit = "kafka"
-                    ansible.playbook = "ansible/network.yml"
-                    ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.verbose = 'vv'
-                    ansible.host_key_checking = false
-                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key' }
-                end
-
-                kafka.vm.provision :ansible do |ansible|
-                    ansible.compatibility_mode = "2.0"
-                    ansible.limit = "kafka"
-                    ansible.playbook = "ansible/cluster.yml"
-                    ansible.inventory_path = "ansible/inventories/vbox"
-                    ansible.verbose = 'vv'
-                    ansible.host_key_checking = false
-                    ansible.extra_vars = { ansible_ssh_private_key_file: './shared-keys/ssh_key' }
-                end
-            end
+            id_rsa_pub = File.read("./shared-keys/ssh_key.pub")
+            config.vm.provision "copy ssh public key", type: "shell",
+              inline: "echo \"#{id_rsa_pub}\" >> /home/vagrant/.ssh/authorized_keys"
         end
     end
 end
