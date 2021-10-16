@@ -98,10 +98,11 @@ ls /brokers/ids
 ### Topic Creation
 
 ```bash
-prog:~ prog$ vagrant ssh kafka-1
-[vagrant@kafka-1 ~]$ kafka-topics.sh --create --zookeeper kafka-1:2181 --replication-factor 2 --partitions 6 --topic sample
+[prog:~ prog]$ vagrant ssh kafka1
+[vagrant@kafka1 ~]$  cd /opt/kafka
+[vagrant@kafka1:/opt/kafka]$ bin/kafka-topics.sh --create --zookeeper zookeeper1:2181 --replication-factor 2 --partitions 6 --topic sample
 Created topic "sample".
-[vagrant@kafka-1 ~]$ kafka-topics.sh --zookeeper zookeeper-1 --topic sample --describe
+[vagrant@kafka1:/opt/kafka]$ bin/kafka-topics.sh --zookeeper zookeeper1 --topic sample --describe
 Topic:sample	PartitionCount:6	ReplicationFactor:2	Configs:
 	Topic: sample	Partition: 0	Leader: 1	Replicas: 1,2	Isr: 1,2
 	Topic: sample	Partition: 1	Leader: 2	Replicas: 2,3	Isr: 2,3
@@ -109,19 +110,21 @@ Topic:sample	PartitionCount:6	ReplicationFactor:2	Configs:
 	Topic: sample	Partition: 3	Leader: 1	Replicas: 1,3	Isr: 1,3
 	Topic: sample	Partition: 4	Leader: 2	Replicas: 2,1	Isr: 2,1
 	Topic: sample	Partition: 5	Leader: 3	Replicas: 3,2	Isr: 3,2
-[vagrant@kafka-1 ~]$
+[vagrant@kafka1:/opt/kafka]$
 ```
 ### Producer
 
 ```bash
-[vagrant@kafka-1 ~]$ kafka-console-producer.sh --broker-list kafka-1:9092,kafka-3:9092 --topic sample
+[vagrant@kafka1:/opt/kafka]$ bin/kafka-console-producer.sh --broker-list kafka1:9092,kafka3:9092 --topic sample
 Hey, is Kafka up and running?
 ```
 
 ### Consumer
-
+On new console
 ```bash
-[vagrant@kafka-1 ~]$ kafka-console-consumer.sh --bootstrap-server kafka-1:9092,kafka-3:9092 --topic sample --from-beginning
+[prog:~ prog]$ vagrant ssh kafka3
+[vagrant@kafka-3 ~]$ cd /opt/kafka
+[vagrant@kafka3:/opt/kafka]$ bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092,kafka3:9092 --topic sample --from-beginning
 Hey, is Kafka up and running?
 ```
 
