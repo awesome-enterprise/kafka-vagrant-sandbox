@@ -16,7 +16,6 @@ In case you need a local cluster providing Kafka with ZooKeeper cluster, you are
 * [Vagrant](https://www.vagrantup.com/downloads)
 * [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads)
 * [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip)
-* [Ansible Config](https://github.com/ansible/ansible/blob/stable-2.11/examples/ansible.cfg) should be placed to `/etc/ansible/ansible.cfg`
 
 
 # Version checking
